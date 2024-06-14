@@ -1,0 +1,574 @@
+{
+	"folders": [
+		{
+			"name": "SuisdkUnreal",
+			"path": "."
+		},
+		{
+			"name": "UE5",
+			"path": "/Users/Shared/Epic Games/UE_5.4"
+		}
+	],
+	"settings": {
+		"typescript.tsc.autoDetect": "off",
+		"npm.autoDetect": "off"
+	},
+	"extensions": {
+		"recommendations": [
+			"ms-vscode.cpptools",
+			"ms-dotnettools.csharp"
+		]
+	},
+	"tasks": {
+		"version": "2.0.0",
+		"tasks": [
+			{
+				"label": "SuisdkUnreal Mac Debug Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"SuisdkUnreal",
+					"Mac",
+					"Debug",
+					"/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/SuisdkUnreal.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "SuisdkUnreal Mac Debug Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"SuisdkUnreal",
+					"Mac",
+					"Debug",
+					"/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/SuisdkUnreal.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"SuisdkUnreal Mac Debug Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "SuisdkUnreal Mac Debug Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"SuisdkUnreal",
+					"Mac",
+					"Debug",
+					"/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/SuisdkUnreal.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "SuisdkUnreal Mac DebugGame Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"SuisdkUnreal",
+					"Mac",
+					"DebugGame",
+					"/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/SuisdkUnreal.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "SuisdkUnreal Mac DebugGame Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"SuisdkUnreal",
+					"Mac",
+					"DebugGame",
+					"/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/SuisdkUnreal.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"SuisdkUnreal Mac DebugGame Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "SuisdkUnreal Mac DebugGame Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"SuisdkUnreal",
+					"Mac",
+					"DebugGame",
+					"/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/SuisdkUnreal.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "SuisdkUnreal Mac Development Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"SuisdkUnreal",
+					"Mac",
+					"Development",
+					"/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/SuisdkUnreal.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "SuisdkUnreal Mac Development Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"SuisdkUnreal",
+					"Mac",
+					"Development",
+					"/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/SuisdkUnreal.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"SuisdkUnreal Mac Development Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "SuisdkUnreal Mac Development Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"SuisdkUnreal",
+					"Mac",
+					"Development",
+					"/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/SuisdkUnreal.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "SuisdkUnreal Mac Test Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"SuisdkUnreal",
+					"Mac",
+					"Test",
+					"/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/SuisdkUnreal.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "SuisdkUnreal Mac Test Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"SuisdkUnreal",
+					"Mac",
+					"Test",
+					"/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/SuisdkUnreal.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"SuisdkUnreal Mac Test Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "SuisdkUnreal Mac Test Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"SuisdkUnreal",
+					"Mac",
+					"Test",
+					"/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/SuisdkUnreal.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "SuisdkUnreal Mac Shipping Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"SuisdkUnreal",
+					"Mac",
+					"Shipping",
+					"/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/SuisdkUnreal.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "SuisdkUnreal Mac Shipping Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"SuisdkUnreal",
+					"Mac",
+					"Shipping",
+					"/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/SuisdkUnreal.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"SuisdkUnreal Mac Shipping Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "SuisdkUnreal Mac Shipping Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"SuisdkUnreal",
+					"Mac",
+					"Shipping",
+					"/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/SuisdkUnreal.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "SuisdkUnrealEditor Mac Debug Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"SuisdkUnrealEditor",
+					"Mac",
+					"Debug",
+					"/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/SuisdkUnreal.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "SuisdkUnrealEditor Mac Debug Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"SuisdkUnrealEditor",
+					"Mac",
+					"Debug",
+					"/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/SuisdkUnreal.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"SuisdkUnrealEditor Mac Debug Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "SuisdkUnrealEditor Mac Debug Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"SuisdkUnrealEditor",
+					"Mac",
+					"Debug",
+					"/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/SuisdkUnreal.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "SuisdkUnrealEditor Mac DebugGame Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"SuisdkUnrealEditor",
+					"Mac",
+					"DebugGame",
+					"/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/SuisdkUnreal.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "SuisdkUnrealEditor Mac DebugGame Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"SuisdkUnrealEditor",
+					"Mac",
+					"DebugGame",
+					"/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/SuisdkUnreal.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"SuisdkUnrealEditor Mac DebugGame Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "SuisdkUnrealEditor Mac DebugGame Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"SuisdkUnrealEditor",
+					"Mac",
+					"DebugGame",
+					"/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/SuisdkUnreal.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "SuisdkUnrealEditor Mac Development Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"SuisdkUnrealEditor",
+					"Mac",
+					"Development",
+					"/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/SuisdkUnreal.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "SuisdkUnrealEditor Mac Development Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"SuisdkUnrealEditor",
+					"Mac",
+					"Development",
+					"/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/SuisdkUnreal.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"SuisdkUnrealEditor Mac Development Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "SuisdkUnrealEditor Mac Development Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"SuisdkUnrealEditor",
+					"Mac",
+					"Development",
+					"/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/SuisdkUnreal.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			}
+		]
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"name": "Launch SuisdkUnreal (Debug)",
+				"request": "launch",
+				"program": "/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/Binaries/Mac/UnrealGame-Mac-Debug.app/Contents/MacOS/UnrealGame-Mac-Debug",
+				"preLaunchTask": "SuisdkUnreal Mac Debug Build",
+				"args": [
+				],
+				"cwd": "/Users/Shared/Epic Games/UE_5.4",
+				"type": "lldb"
+			},
+			{
+				"name": "Launch SuisdkUnreal (DebugGame)",
+				"request": "launch",
+				"program": "/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/Binaries/Mac/UnrealGame-Mac-DebugGame.app/Contents/MacOS/UnrealGame-Mac-DebugGame",
+				"preLaunchTask": "SuisdkUnreal Mac DebugGame Build",
+				"args": [
+				],
+				"cwd": "/Users/Shared/Epic Games/UE_5.4",
+				"type": "lldb"
+			},
+			{
+				"name": "Launch SuisdkUnreal (Development)",
+				"request": "launch",
+				"program": "/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/Binaries/Mac/UnrealGame.app/Contents/MacOS/UnrealGame",
+				"preLaunchTask": "SuisdkUnreal Mac Development Build",
+				"args": [
+				],
+				"cwd": "/Users/Shared/Epic Games/UE_5.4",
+				"type": "lldb"
+			},
+			{
+				"name": "Launch SuisdkUnreal (Test)",
+				"request": "launch",
+				"program": "/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/Binaries/Mac/UnrealGame-Mac-Test.app/Contents/MacOS/UnrealGame-Mac-Test",
+				"preLaunchTask": "SuisdkUnreal Mac Test Build",
+				"args": [
+				],
+				"cwd": "/Users/Shared/Epic Games/UE_5.4",
+				"type": "lldb"
+			},
+			{
+				"name": "Launch SuisdkUnreal (Shipping)",
+				"request": "launch",
+				"program": "/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/Binaries/Mac/UnrealGame-Mac-Shipping.app/Contents/MacOS/UnrealGame-Mac-Shipping",
+				"preLaunchTask": "SuisdkUnreal Mac Shipping Build",
+				"args": [
+				],
+				"cwd": "/Users/Shared/Epic Games/UE_5.4",
+				"type": "lldb"
+			},
+			{
+				"name": "Launch SuisdkUnrealEditor (Debug)",
+				"request": "launch",
+				"program": "/Users/Shared/Epic Games/UE_5.4/Engine/Binaries/Mac/UnrealEditor-Mac-Debug.app/Contents/MacOS/UnrealEditor-Mac-Debug",
+				"preLaunchTask": "SuisdkUnrealEditor Mac Debug Build",
+				"args": [
+					"/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/SuisdkUnreal.uproject"
+				],
+				"cwd": "/Users/Shared/Epic Games/UE_5.4",
+				"type": "lldb"
+			},
+			{
+				"name": "Launch SuisdkUnrealEditor (DebugGame)",
+				"request": "launch",
+				"program": "/Users/Shared/Epic Games/UE_5.4/Engine/Binaries/Mac/UnrealEditor-Mac-DebugGame.app/Contents/MacOS/UnrealEditor-Mac-DebugGame",
+				"preLaunchTask": "SuisdkUnrealEditor Mac DebugGame Build",
+				"args": [
+					"/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/SuisdkUnreal.uproject"
+				],
+				"cwd": "/Users/Shared/Epic Games/UE_5.4",
+				"type": "lldb"
+			},
+			{
+				"name": "Launch SuisdkUnrealEditor (Development)",
+				"request": "launch",
+				"program": "/Users/Shared/Epic Games/UE_5.4/Engine/Binaries/Mac/UnrealEditor.app/Contents/MacOS/UnrealEditor",
+				"preLaunchTask": "SuisdkUnrealEditor Mac Development Build",
+				"args": [
+					"/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/SuisdkUnreal.uproject"
+				],
+				"cwd": "/Users/Shared/Epic Games/UE_5.4",
+				"type": "lldb"
+			},
+			{
+				"name": "Generate Project Files",
+				"type": "coreclr",
+				"request": "launch",
+				"preLaunchTask": "UnrealBuildTool Mac Development Build",
+				"program": "/Users/Shared/Epic Games/UE_5.4/Engine/Build/BatchFiles/RunUBT.bat",
+				"args": [
+					"-projectfiles",
+					"-vscode",
+					"-project=/Users/cloudsguitar/Desktop/Unreal-Sui-SDK/SuisdkUnreal.uproject",
+					"-game",
+					"-engine",
+					"-dotnet"
+				],
+				"console": "internalConsole",
+				"internalConsoleOptions": "openOnSessionStart",
+				"stopAtEntry": false,
+				"cwd": "/Users/Shared/Epic Games/UE_5.4"
+			}
+		]
+	}
+}
