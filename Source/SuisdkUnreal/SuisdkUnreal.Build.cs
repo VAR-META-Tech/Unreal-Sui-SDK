@@ -8,7 +8,7 @@ public class SuisdkUnreal : ModuleRules
 	public SuisdkUnreal(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
-
+		//bEnableExceptions = true;
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UMG" });
 		PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
 		PrivateDependencyModuleNames.AddRange(new string[] { });
@@ -22,6 +22,7 @@ public class SuisdkUnreal : ModuleRules
 			PublicIncludePaths.AddRange(new string[] { Path.Combine(ModuleDirectory, "../../") });
 			PublicIncludePaths.AddRange(new string[] { Path.Combine(ModuleDirectory, "../../../") });
 		}
-		//CppStandard = CppStandardVersion.Cpp17;
+		//bEnableUndefinedIdentifierWarnings = false;
+		CppStandard = CppStandardVersion.Cpp17;
 	}
 }

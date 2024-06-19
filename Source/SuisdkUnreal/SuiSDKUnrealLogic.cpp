@@ -2,12 +2,16 @@
 
 
 #include "SuiSDKUnrealLogic.h"
+#include "GenericPlatform/GenericPlatformMisc.h"
 #include "sui_lib.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
 #include <memory>
 #include <string>
+#if PLATFORM_MAC
+#import <Cocoa/Cocoa.h>
+#endif
 
 void USuiSDKUnrealLogic::OnInitApp()
 {
@@ -25,6 +29,24 @@ void USuiSDKUnrealLogic::OnInitApp()
     }
 
     free_wallet_list(wallet_list);
+}
+
+void USuiSDKUnrealLogic::CopyTextToClipboard(const FString& text)
+{
+    #if PLATFORM_MAC
+    // Convert FString to NSString
+    NSString* ClipboardText = [NSString stringWithFString: text];
+
+    // Create a pasteboard and clear its content
+    NSPasteboard* Pasteboard = [NSPasteboard generalPasteboard];
+    [Pasteboard clearContents];
+
+    // Set the NSString to the pasteboard
+    [Pasteboard setString:ClipboardText forType:NSPasteboardTypeString];
+#else
+    // Use the default implementation for other platforms
+    FPlatformApplicationMisc::ClipboardCopy(*text);
+#endif
 }
 
 void USuiSDKUnrealLogic::OnBtnGenerateClicked(FString &mnemonic,FString &address, FString &privateKey, FString &publicKey)
@@ -82,29 +104,29 @@ void USuiSDKUnrealLogic::OnBtnGetWalletMnemonicClicked(FString importmnemonic, F
 std::string MyStdString(TCHAR_TO_UTF8(*importmnemonic));
 const char *mnemonicConchar = MyStdString.c_str();
 printf("  mnemonicConchar: %s\n", mnemonicConchar);
-import_from_mnemonic(mnemonicConchar);
-WalletList walletlist= get_wallets();
- for (size_t i = 0; i < walletlist.length; ++i)
-    {
-        Wallet wallet = walletlist.wallets[i];
-        if (strcmp(mnemonicConchar, wallet.mnemonic ) == 0)
-        {
-            address = wallet.address;
-            privateKey = wallet.private_key;
-            publicKey = wallet.public_base64_key;
-            mnemonic = wallet.mnemonic;
+char * returnAddress = import_from_mnemonic(mnemonicConchar);
+address = returnAddress;
+// WalletList walletlist= get_wallets();
+//  for (size_t i = 0; i < walletlist.length; ++i)
+//     {
+//         Wallet wallet = walletlist.wallets[i];
+//         printf("  Address: %s\n",wallet.address);
+//         printf("  Mnemonic: %s\n", wallet.mnemonic);
+//         printf("  Public Base64 Key: %s\n", wallet.public_base64_key);
+//         printf("  Private Key: %s\n", wallet.private_key);
 
-            printf("  Address: %s\n",wallet.address);
-            printf("  Mnemonic: %s\n", wallet.mnemonic);
-            printf("  Public Base64 Key: %s\n", wallet.public_base64_key);
-            printf("  Private Key: %s\n", wallet.private_key);
-           
-            break;
-        }
+//         if (strcmp(mnemonicConchar, wallet.mnemonic ) == 0)
+//         {
+//             address = wallet.address;
+//             privateKey = wallet.private_key;
+//             publicKey = wallet.public_base64_key;
+//             mnemonic = wallet.mnemonic;
+//             break;
+//         }
        
        
-    }
-free_wallet_list(walletlist);
+//     }
+// free_wallet_list(walletlist);
 }
 
 void USuiSDKUnrealLogic::OnBtnGetWallByCurrentAddress(FString currentAddress, FString &mnemonic, FString &address, FString &privateKey, FString &publicKey)

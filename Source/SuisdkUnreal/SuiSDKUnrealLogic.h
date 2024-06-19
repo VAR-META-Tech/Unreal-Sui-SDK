@@ -4,6 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "HAL/PlatformApplicationMisc.h"
+#include "Misc/AutomationTest.h"
+
 #include "SuiSDKUnrealLogic.generated.h"
 
 /**
@@ -15,6 +18,8 @@ class SUISDKUNREAL_API USuiSDKUnrealLogic : public UBlueprintFunctionLibrary
 	GENERATED_BODY()
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnInitApp"), Category = "SuiSDKUnrealLogic")
 	static void OnInitApp();
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "CopyTextToClipboard"), Category = "SuiSDKUnrealLogic")
+	static void CopyTextToClipboard(const FString& text);
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnGenerateClicked"), Category = "SuiSDKUnrealLogic")
 	static void OnBtnGenerateClicked(FString &mnemonic,FString &address,FString &privateKey,FString &publicKey);
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnGetWalletPrivateKeyClicked"), Category = "SuiSDKUnrealLogic")
