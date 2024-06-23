@@ -9,6 +9,8 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <sstream>
+#include <cstdint>
 #if PLATFORM_MAC
 #import <Cocoa/Cocoa.h>
 #endif
@@ -172,4 +174,47 @@ WalletList walletlist= get_wallets();
 free_wallet_list(walletlist);
 }
 
+void USuiSDKUnrealLogic::OnBtnGetBalanceByCurrentAddress(FString currentAddress, FString &returnCoinType, FString &returnTotalBalance)
+{
+    //Convert FString to const char*
+std::string MyStdString(TCHAR_TO_UTF8(*currentAddress));
+const char *currentAddressSelected = MyStdString.c_str();
+ Balance balance = get_balance_sync(currentAddressSelected);
+    if (balance.coin_type == NULL) {
+        printf("Failed to fetch balance.\n");
+    } else {
+        printf(" *** Balance ***\n");
+        printf("Coin Type: %s\n", balance.coin_type);
+        returnCoinType = balance.coin_type;
+        printf("Coin Object Count: %zu\n", balance.coin_object_count);
+        std::ostringstream oss;
 
+        // Stream the uint64_t values into the string stream as a comma-separated list
+        oss << balance.total_balance[0];
+        
+        std::string result = oss.str();
+        returnTotalBalance = result.c_str();
+        printf("Total Balance: %s\n", result.c_str());
+    // Convert the stream to a string and output it
+
+        // __uint128_t total_balance = ((__uint128_t)balance.total_balance[1] << 64) | balance.total_balance[0];
+        // char total_balance_str[40]; // Enough to hold 2^128-1
+        // snprintf(total_balance_str, sizeof(total_balance_str), "%llu", total_balance);
+        // printf("Total Balance: %s\n", total_balance_str);
+        // returnTotalBalance = total_balance_str;
+        // printf(" *** Balance ***\n");
+    }
+    // Free allocated resources
+    free_balance(balance);
+}
+
+void USuiSDKUnrealLogic::OnBtnTransaction(FString sendAddress, FString receiveAddress, int amount)
+{
+//Convert FString to const char*
+std::string MyStdString(TCHAR_TO_UTF8(*sendAddress));
+const char *currentsendAddress = MyStdString.c_str();
+std::string MyStdString2(TCHAR_TO_UTF8(*receiveAddress));
+const char *currentreceiveAddress = MyStdString2.c_str();
+const char* result = programmable_transaction(currentsendAddress, currentreceiveAddress,amount);
+    printf("%s\n", result);
+}

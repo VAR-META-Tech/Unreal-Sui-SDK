@@ -28,4 +28,9 @@ class SUISDKUNREAL_API USuiSDKUnrealLogic : public UBlueprintFunctionLibrary
 	static void OnBtnGetWalletMnemonicClicked(FString importmnemonic,FString &mnemonic,FString &address,FString &privateKey,FString &publicKey);
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnGetWallByCurrentAddress"), Category = "SuiSDKUnrealLogic")
 	static void OnBtnGetWallByCurrentAddress(FString currentAddress,FString &mnemonic,FString &address,FString &privateKey,FString &publicKey);
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnGetBalanceByCurrentAddress"), Category = "SuiSDKUnrealLogic")
+	static void OnBtnGetBalanceByCurrentAddress(FString currentAddress,FString &returnCoinType,FString &returnTotalBalance);
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnTransaction"), Category = "SuiSDKUnrealLogic")
+	static void OnBtnTransaction(FString sendAddress,FString receiveAddress,int mount);
+	
 };

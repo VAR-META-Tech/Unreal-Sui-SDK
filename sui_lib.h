@@ -7,10 +7,13 @@
 #include <inttypes.h>
 #include "sui_client.h"
 #include "sui_wallet.h"
+#include "sui_balance.h"
+#include "sui_transaction.h"
 #ifdef __cplusplus
 extern "C"
 {
 #endif
+
 
     // code here
 
