@@ -21,7 +21,7 @@ class SUISDKUNREAL_API USuiSDKUnrealLogic : public UBlueprintFunctionLibrary
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "CopyTextToClipboard"), Category = "SuiSDKUnrealLogic")
 	static void CopyTextToClipboard(const FString& text);
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnGenerateClicked"), Category = "SuiSDKUnrealLogic")
-	static void OnBtnGenerateClicked(FString &mnemonic,FString &address,FString &privateKey,FString &publicKey);
+	static void OnBtnGenerateClicked(FString key_scheme,FString word_length,FString &mnemonic,FString &address,FString &privateKey,FString &publicKey);
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnGetWalletPrivateKeyClicked"), Category = "SuiSDKUnrealLogic")
 	static void OnBtnGetWalletPrivateKeyClicked(FString importprivateKey,FString &mnemonic,FString &address,FString &privateKey,FString &publicKey);
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnGetWalletMnemonicClicked"), Category = "SuiSDKUnrealLogic")
