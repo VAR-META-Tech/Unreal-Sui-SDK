@@ -191,17 +191,117 @@ void USuiSDKUnrealLogic::OnBtnGetBalanceByCurrentAddress(FString currentAddress,
     free_balance(balance);
 }
 
-void USuiSDKUnrealLogic::OnBtnTransaction(FString sendAddress, FString receiveAddress, int amount)
+void USuiSDKUnrealLogic::OnBtnTransaction(FString sendAddress, FString receiveAddress, int amount, FString &resultTrans, bool &IsTransSucceed)
 {
     const char *currentsendAddress = FstringToChar(sendAddress);
     const char *currentreceiveAddress = FstringToChar(receiveAddress);
     const char *result = programmable_transaction(currentsendAddress, currentreceiveAddress, amount);
-    printf("%s\n", result);
+    resultTrans = result;
+    printf("OnBtnTransaction : %s\n", result);
+    if (strcmp(result, "Transaction completed successfully") == 0)
+    {
+        IsTransSucceed = true;
+    }
+    else
+    {
+        IsTransSucceed = false;
+    }
 }
 
-void USuiSDKUnrealLogic::OnBtnRequestFaucet(FString faucetAddress)
+void USuiSDKUnrealLogic::OnBtnRequestFaucet(FString faucetAddress, FString &resultFaucet, bool &IsFaucetSucceed)
 {
     const char *faucetaddressstr = FstringToChar(faucetAddress);
     const char *result = request_tokens_from_faucet_(faucetaddressstr);
+    resultFaucet = result;
     printf("request_tokens_from_faucet_: %s\n", result);
+    if (strcmp(result, "Request Faucet successful") == 0)
+    {
+        IsFaucetSucceed = true;
+    }
+    else
+    {
+        IsFaucetSucceed = false;
+    }
+}
+
+void USuiSDKUnrealLogic::OnBtnGetMultisignClicked(TArray<FString> arrayAddress, TArray<int> arrayWeight, int threshold, FString &multisignAddress, FString &multisignBytes, FString &resultFaucet, bool &IsFaucetSucceed)
+{
+    // const char *addresses[] = {"0x013c740d731b06bb7447316e7b43ea6120d808d07cd0a8a0c6f391930bd449dd",
+    //                            "0x2691bf90af73ce452f71ef081c1d8f00a9d8a3506101c5def54f6bed8c1be733",
+    //                            "0x66e350a92a4ddf98906f4ae1a208a23e40047105f470c780d2d6bec139031f75"};
+    const char *addresses[arrayAddress.Num()];
+    for (int32 i = 0; i < arrayAddress.Num(); ++i)
+    {
+        // Convert FString to const char* using TCHAR_TO_ANSI
+        addresses[i] = TCHAR_TO_ANSI(*arrayAddress[i]);
+    }
+    // uint8_t weights_data[] = {1, 1, 1};
+    uint8_t weights_data[arrayWeight.Num()];
+    for (int32 i = 0; i < arrayWeight.Num(); ++i)
+    {
+        // Convert FString to const char* using TCHAR_TO_ANSI
+        weights_data[i] = arrayWeight[i];
+    }
+    CStringArray cstring_array = {addresses, arrayAddress.Num()};
+    CU8Array cu8_array = {weights_data, arrayWeight.Num()};
+    uint16_t threshold_ = threshold;
+    MultiSig multisig = get_or_create_multisig(cstring_array, cu8_array, threshold_);
+
+    printf("get_or_create_multisig: %s\n", multisig.address);
+    printf("MultiSig bytes: \n");
+    for (uint32_t i = 0; i < multisig.bytes.len; i++)
+    {
+        printf("%u ", multisig.bytes.data[i]);
+    }
+
+    // const char *from_address = "0xbefabc05fd9339d24e7413db011cb9be62f852fd2ce6430c5c6852dac85e46cf";
+    // const char *to_address = "0x2691bf90af73ce452f71ef081c1d8f00a9d8a3506101c5def54f6bed8c1be733";
+    // uint64_t amount = 5400000000;
+
+    // CU8Array result = create_transaction(from_address, to_address, amount);
+
+    // if (result.error == NULL)
+    // {
+    //     printf("Transaction created successfully.\n");
+    //     printf("Data length: %u\n", result.len);
+    //     printf("Data: ");
+    //     for (uint32_t i = 0; i < result.len; i++)
+    //     {
+    //         printf("%02x", result.data[i]);
+    //     }
+    //     printf("\n");
+    // }
+    // else
+    // {
+    //     printf("Error: %s\n", result.error);
+    //     free((void *)result.error); // Free the error message
+    // }
+    // // Free the error message if it was allocated
+    // // if (result.error != NULL)
+    // // {
+    // //     free((void *)result.error);
+    // // }
+
+    // // CU8Array multisig_bytes = multisig.bytes;
+
+    // // uint8_t tx_data[] = {0x05, 0x06, 0x07, 0x08}; // Sample data
+    // // CU8Array tx = result;
+
+    // const char *addresses_data[] = {"0x013c740d731b06bb7447316e7b43ea6120d808d07cd0a8a0c6f391930bd449dd",
+    //                                 "0x2691bf90af73ce452f71ef081c1d8f00a9d8a3506101c5def54f6bed8c1be733"};
+    // CStringArray addresses2 = {addresses_data, 2};
+
+    // // Call the Rust function
+    // const char *result2 = sign_and_execute_transaction(multisig.bytes, result, addresses2);
+
+    // if (result2 != NULL)
+    // {
+    //     printf("Result: %s\n", result2);
+    //     // Free the result when done
+    //     free((void *)result2);
+    // }
+    // else
+    // {
+    //     printf("Error occurred\n");
+    // }
 }

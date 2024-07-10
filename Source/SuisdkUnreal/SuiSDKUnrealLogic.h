@@ -31,7 +31,9 @@ class SUISDKUNREAL_API USuiSDKUnrealLogic : public UBlueprintFunctionLibrary
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnGetBalanceByCurrentAddress"), Category = "SuiSDKUnrealLogic")
 	static void OnBtnGetBalanceByCurrentAddress(FString currentAddress, FString &returnCoinType, FString &returnTotalBalance);
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnTransaction"), Category = "SuiSDKUnrealLogic")
-	static void OnBtnTransaction(FString sendAddress, FString receiveAddress, int mount);
+	static void OnBtnTransaction(FString sendAddress, FString receiveAddress, int mount, FString &resultTrans, bool &IsTransSucceed);
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnRequestFaucet"), Category = "SuiSDKUnrealLogic")
-	static void OnBtnRequestFaucet(FString faucetAddress);
+	static void OnBtnRequestFaucet(FString faucetAddress, FString &resultFaucet, bool &IsFaucetSucceed);
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnGetMultisignClicked"), Category = "SuiSDKUnrealLogic")
+	static void OnBtnGetMultisignClicked(TArray<FString> arrayAddress, TArray<int> arrayWeight, int threshold, FString &multisignAddress, FString &multisignBytes, FString &resultFaucet, bool &IsFaucetSucceed);
 };
