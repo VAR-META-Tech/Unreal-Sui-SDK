@@ -13,7 +13,13 @@
 		"typescript.tsc.autoDetect": "off",
 		"npm.autoDetect": "off",
 		"files.associations": {
-			"*.ipp": "cpp"
+			"*.ipp": "cpp",
+			"array": "cpp",
+			"span": "cpp",
+			"string": "cpp",
+			"string_view": "cpp",
+			"vector": "cpp",
+			"alignedvector3": "cpp"
 		}
 	},
 	"extensions": {

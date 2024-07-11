@@ -11,6 +11,10 @@
 #include <string>
 #include <sstream>
 #include <cstdint>
+#include <sstream>
+#include <iomanip>
+#include <cstring> // For memcpy
+
 #if PLATFORM_MAC
 #import <Cocoa/Cocoa.h>
 #endif
@@ -223,8 +227,27 @@ void USuiSDKUnrealLogic::OnBtnRequestFaucet(FString faucetAddress, FString &resu
         IsFaucetSucceed = false;
     }
 }
+// std::string BytesToHex(const uint8_t *data, size_t len)
+// {
+//     if (data == nullptr || len == 0)
+//     {
+//         return "";
+//     }
 
-void USuiSDKUnrealLogic::OnBtnGetMultisignClicked(TArray<FString> arrayAddress, TArray<int> arrayWeight, int threshold, FString &multisignAddress, FString &multisignBytes, FString &resultFaucet, bool &IsFaucetSucceed)
+//     std::string hex;
+//     hex.reserve(len * 2); // Reserve space to avoid multiple reallocations
+
+//     for (size_t i = 0; i < len; ++i)
+//     {
+//         std::stringstream ss;
+//         ss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(data[i]);
+//         hex += ss.str();
+//     }
+
+//     return hex;
+// }
+
+void USuiSDKUnrealLogic::OnBtnGetMultisignClicked(TArray<FString> arrayAddress, TArray<int> arrayWeight, int threshold, FString &multisignAddress, FString &multisignBytes, FString &BalanceReturn, FString &resultError, bool &IsFaucetSucceed)
 {
     // const char *addresses[] = {"0x013c740d731b06bb7447316e7b43ea6120d808d07cd0a8a0c6f391930bd449dd",
     //                            "0x2691bf90af73ce452f71ef081c1d8f00a9d8a3506101c5def54f6bed8c1be733",
@@ -248,11 +271,20 @@ void USuiSDKUnrealLogic::OnBtnGetMultisignClicked(TArray<FString> arrayAddress, 
     MultiSig multisig = get_or_create_multisig(cstring_array, cu8_array, threshold_);
 
     printf("get_or_create_multisig: %s\n", multisig.address);
-    printf("MultiSig bytes: \n");
-    for (uint32_t i = 0; i < multisig.bytes.len; i++)
-    {
-        printf("%u ", multisig.bytes.data[i]);
-    }
+    multisignAddress = multisig.address;
+    // Convert to hex string
+    multisignBytes = BytesToHex(multisig.bytes.data, multisig.bytes.len);
+    // Print the hex string
+    std::cout << "Hex String: " << FstringToChar(multisignBytes) << std::endl;
+
+    Balance balance = get_balance_sync(multisig.address);
+    std::ostringstream oss;
+    // Stream the uint64_t values into the string stream as a comma-separated list
+    oss << balance.total_balance[0];
+    std::string result = oss.str();
+    BalanceReturn = result.c_str();
+    printf("Total Balance: %s\n", result.c_str());
+    free_balance(balance);
 
     // const char *from_address = "0xbefabc05fd9339d24e7413db011cb9be62f852fd2ce6430c5c6852dac85e46cf";
     // const char *to_address = "0x2691bf90af73ce452f71ef081c1d8f00a9d8a3506101c5def54f6bed8c1be733";

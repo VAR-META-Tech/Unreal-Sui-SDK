@@ -35,5 +35,5 @@ class SUISDKUNREAL_API USuiSDKUnrealLogic : public UBlueprintFunctionLibrary
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnRequestFaucet"), Category = "SuiSDKUnrealLogic")
 	static void OnBtnRequestFaucet(FString faucetAddress, FString &resultFaucet, bool &IsFaucetSucceed);
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnGetMultisignClicked"), Category = "SuiSDKUnrealLogic")
-	static void OnBtnGetMultisignClicked(TArray<FString> arrayAddress, TArray<int> arrayWeight, int threshold, FString &multisignAddress, FString &multisignBytes, FString &resultFaucet, bool &IsFaucetSucceed);
+	static void OnBtnGetMultisignClicked(TArray<FString> arrayAddress, TArray<int> arrayWeight, int threshold, FString &multisignAddress, FString &multisignBytes, FString &Balance, FString &result, bool &IsFaucetSucceed);
 };
