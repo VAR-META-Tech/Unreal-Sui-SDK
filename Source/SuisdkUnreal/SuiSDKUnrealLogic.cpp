@@ -19,6 +19,8 @@
 #import <Cocoa/Cocoa.h>
 #endif
 
+MultiSig multisig;
+CU8Array resultTX;
 const char *FstringToChar(FString InputString)
 {
     // // Convert FString to const char*
@@ -268,7 +270,7 @@ void USuiSDKUnrealLogic::OnBtnGetMultisignClicked(TArray<FString> arrayAddress, 
     CStringArray cstring_array = {addresses, arrayAddress.Num()};
     CU8Array cu8_array = {weights_data, arrayWeight.Num()};
     uint16_t threshold_ = threshold;
-    MultiSig multisig = get_or_create_multisig(cstring_array, cu8_array, threshold_);
+    multisig = get_or_create_multisig(cstring_array, cu8_array, threshold_);
 
     printf("get_or_create_multisig: %s\n", multisig.address);
     multisignAddress = multisig.address;
@@ -286,28 +288,6 @@ void USuiSDKUnrealLogic::OnBtnGetMultisignClicked(TArray<FString> arrayAddress, 
     printf("Total Balance: %s\n", result.c_str());
     free_balance(balance);
 
-    // const char *from_address = "0xbefabc05fd9339d24e7413db011cb9be62f852fd2ce6430c5c6852dac85e46cf";
-    // const char *to_address = "0x2691bf90af73ce452f71ef081c1d8f00a9d8a3506101c5def54f6bed8c1be733";
-    // uint64_t amount = 5400000000;
-
-    // CU8Array result = create_transaction(from_address, to_address, amount);
-
-    // if (result.error == NULL)
-    // {
-    //     printf("Transaction created successfully.\n");
-    //     printf("Data length: %u\n", result.len);
-    //     printf("Data: ");
-    //     for (uint32_t i = 0; i < result.len; i++)
-    //     {
-    //         printf("%02x", result.data[i]);
-    //     }
-    //     printf("\n");
-    // }
-    // else
-    // {
-    //     printf("Error: %s\n", result.error);
-    //     free((void *)result.error); // Free the error message
-    // }
     // // Free the error message if it was allocated
     // // if (result.error != NULL)
     // // {
@@ -336,4 +316,64 @@ void USuiSDKUnrealLogic::OnBtnGetMultisignClicked(TArray<FString> arrayAddress, 
     // {
     //     printf("Error occurred\n");
     // }
+}
+
+void USuiSDKUnrealLogic::OnBtnCreateTransMultisignClicked(FString sendAddress, FString receiveAddress, int mount, FString &multisignTransBytes, FString &resultTrans, bool &IsTransSucceed)
+{
+    const char *from_address = FstringToChar(sendAddress);
+    const char *to_address = FstringToChar(receiveAddress);
+    uint64_t amount = mount;
+
+    resultTX = create_transaction(from_address, to_address, amount);
+    multisignTransBytes = BytesToHex(resultTX.data, resultTX.len);
+    if (resultTX.error == NULL)
+    {
+        printf("Transaction created successfully.\n");
+        printf("Data length: %u\n", resultTX.len);
+        printf("Data: ");
+        for (uint32_t i = 0; i < resultTX.len; i++)
+        {
+            printf("%02x", resultTX.data[i]);
+        }
+        printf("\n");
+    }
+    else
+    {
+        printf("Error: %s\n", resultTX.error);
+        free((void *)resultTX.error); // Free the error message
+    }
+}
+
+void USuiSDKUnrealLogic::OnBtnSignandExecuteTransactionClicked(TArray<FString> arrayAddress, FString &ReturnBalance, FString &result, bool &IsSucceed)
+{
+    const char *addresses_data[arrayAddress.Num()];
+    for (int32 i = 0; i < arrayAddress.Num(); ++i)
+    {
+        // Convert FString to const char* using TCHAR_TO_ANSI
+        addresses_data[i] = TCHAR_TO_ANSI(*arrayAddress[i]);
+        printf("addresses_data: %s\n", addresses_data[i]);
+    }
+    CStringArray addresses2 = {addresses_data, arrayAddress.Num()};
+    // Call the Rust function
+    const char *result2 = sign_and_execute_transaction(multisig.bytes, resultTX, addresses2);
+
+    if (result2 != NULL)
+    {
+        printf("Result: %s\n", result2);
+        // Free the result when done
+        free((void *)result2);
+    }
+    else
+    {
+        printf("Error occurred\n");
+    }
+
+    Balance balance = get_balance_sync(multisig.address);
+    std::ostringstream oss;
+    // Stream the uint64_t values into the string stream as a comma-separated list
+    oss << balance.total_balance[0];
+    std::string resultBalance = oss.str();
+    ReturnBalance = resultBalance.c_str();
+    printf("Total Balance: %s\n", resultBalance.c_str());
+    free_balance(balance);
 }

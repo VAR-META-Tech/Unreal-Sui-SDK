@@ -35,5 +35,9 @@ class SUISDKUNREAL_API USuiSDKUnrealLogic : public UBlueprintFunctionLibrary
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnRequestFaucet"), Category = "SuiSDKUnrealLogic")
 	static void OnBtnRequestFaucet(FString faucetAddress, FString &resultFaucet, bool &IsFaucetSucceed);
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnGetMultisignClicked"), Category = "SuiSDKUnrealLogic")
-	static void OnBtnGetMultisignClicked(TArray<FString> arrayAddress, TArray<int> arrayWeight, int threshold, FString &multisignAddress, FString &multisignBytes, FString &Balance, FString &result, bool &IsFaucetSucceed);
+	static void OnBtnGetMultisignClicked(TArray<FString> arrayAddress, TArray<int> arrayWeight, int threshold, FString &multisignAddress, FString &multisignBytes, FString &ReturnBalance, FString &returnresult, bool &IsSucceed);
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnCreateTransMultisignClicked"), Category = "SuiSDKUnrealLogic")
+	static void OnBtnCreateTransMultisignClicked(FString sendAddress, FString receiveAddress, int mount, FString &multisignTransBytes, FString &resultTrans, bool &IsTransSucceed);
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnSignandExecuteTransactionClicked"), Category = "SuiSDKUnrealLogic")
+	static void OnBtnSignandExecuteTransactionClicked(TArray<FString> arrayAddress, FString &ReturnBalance, FString &result, bool &IsSucceed);
 };
