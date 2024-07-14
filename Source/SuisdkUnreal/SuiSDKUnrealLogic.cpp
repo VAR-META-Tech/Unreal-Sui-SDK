@@ -258,7 +258,7 @@ void USuiSDKUnrealLogic::OnBtnGetMultisignClicked(TArray<FString> arrayAddress, 
     for (int32 i = 0; i < arrayAddress.Num(); ++i)
     {
         // Convert FString to const char* using TCHAR_TO_ANSI
-        addresses[i] = TCHAR_TO_ANSI(*arrayAddress[i]);
+        addresses[i] = FstringToChar(arrayAddress[i]);
     }
     // uint8_t weights_data[] = {1, 1, 1};
     uint8_t weights_data[arrayWeight.Num()];
@@ -266,10 +266,14 @@ void USuiSDKUnrealLogic::OnBtnGetMultisignClicked(TArray<FString> arrayAddress, 
     {
         // Convert FString to const char* using TCHAR_TO_ANSI
         weights_data[i] = arrayWeight[i];
+        printf("weights_data %d \n", weights_data[i]);
     }
     CStringArray cstring_array = {addresses, arrayAddress.Num()};
     CU8Array cu8_array = {weights_data, arrayWeight.Num()};
+
     uint16_t threshold_ = threshold;
+    printf("threshold_ %d \n", threshold_);
+    printf("threshold %d \n", threshold);
     multisig = get_or_create_multisig(cstring_array, cu8_array, threshold_);
 
     printf("get_or_create_multisig: %s\n", multisig.address);
@@ -350,8 +354,8 @@ void USuiSDKUnrealLogic::OnBtnSignandExecuteTransactionClicked(TArray<FString> a
     for (int32 i = 0; i < arrayAddress.Num(); ++i)
     {
         // Convert FString to const char* using TCHAR_TO_ANSI
-        addresses_data[i] = TCHAR_TO_ANSI(*arrayAddress[i]);
-        printf("addresses_data: %s\n", addresses_data[i]);
+        addresses_data[i] = FstringToChar(arrayAddress[i]);
+        printf("addresses_data Vote: %s\n", addresses_data[i]);
     }
     CStringArray addresses2 = {addresses_data, arrayAddress.Num()};
     // Call the Rust function
