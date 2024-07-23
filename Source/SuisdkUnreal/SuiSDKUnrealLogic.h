@@ -40,4 +40,12 @@ class SUISDKUNREAL_API USuiSDKUnrealLogic : public UBlueprintFunctionLibrary
 	static void OnBtnCreateTransMultisignClicked(FString sendAddress, FString receiveAddress, int mount, FString &multisignTransBytes, FString &resultTrans, bool &IsTransSucceed);
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnSignandExecuteTransactionClicked"), Category = "SuiSDKUnrealLogic")
 	static void OnBtnSignandExecuteTransactionClicked(TArray<FString> arrayAddress, FString &ReturnBalance, FString &result, bool &IsSucceed);
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnMintNFTClicked"), Category = "SuiSDKUnrealLogic")
+	static void OnBtnMintNFTClicked(FString sendNFTAddress, FString nftName, FString nftDescription, FString nftURL, FString &result, bool &IsSucceed);
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnNFTTransactionClicked"), Category = "SuiSDKUnrealLogic")
+	static void OnBtnNFTTransactionClicked(FString sendNFTAddress, FString nft_id, FString receiveNFTaddress, FString &result, bool &IsSucceed);
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnNFTGetListData"), Category = "SuiSDKUnrealLogic")
+	static void OnBtnNFTGetListData(FString curNFTAddress, int &lengthArray, FString &result, bool &IsSucceed);
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnNFTGetDataItem"), Category = "SuiSDKUnrealLogic")
+	static void OnBtnNFTGetDataItem(FString curNFTAddress, int index, FString &object_id, FString &version, FString &digest, FString &Type, FString &description, FString &name, FString &nftUrl, FString &result, bool &IsSucceed);
 };

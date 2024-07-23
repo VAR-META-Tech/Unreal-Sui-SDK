@@ -21,6 +21,9 @@
 
 MultiSig multisig;
 CU8Array resultTX;
+CSuiObjectDataArray arrayNFT;
+const char *package_id = "0xd1efbd86210322b550a8d6017ad5113fda2bd4f486593096f83e7b9ce3cbd002";
+
 const char *FstringToChar(FString InputString)
 {
     // // Convert FString to const char*
@@ -380,4 +383,88 @@ void USuiSDKUnrealLogic::OnBtnSignandExecuteTransactionClicked(TArray<FString> a
     ReturnBalance = resultBalance.c_str();
     printf("Total Balance: %s\n", resultBalance.c_str());
     free_balance(balance);
+}
+
+void USuiSDKUnrealLogic::OnBtnMintNFTClicked(FString sendNFTAddress, FString nftName, FString nftDescription, FString nftURL, FString &resultFstring, bool &IsSucceed)
+{
+    const char *sender_address = FstringToChar(sendNFTAddress);
+    const char *name = FstringToChar(nftName);
+    const char *description = FstringToChar(nftDescription);
+    const char *url = FstringToChar(nftURL);
+
+    const char *result = mint_nft(package_id, sender_address, name, description, url);
+
+    // const char *sender_address = "0x013c740d731b06bb7447316e7b43ea6120d808d07cd0a8a0c6f391930bd449dd";
+    // const char *nft_id = "0x68ce773d046e42959757a800af4db34ce5a725630841824d2fd02b08c86d476e";
+    // const char *recipient_address = "0x66e350a92a4ddf98906f4ae1a208a23e40047105f470c780d2d6bec139031f75";
+    // const char *result = transfer_nft(package_id, sender_address, nft_id, recipient_address);
+
+    if (result != NULL)
+    {
+        printf("Result: %s\n", result);
+        resultFstring = result;
+        // Free the result when done
+        free((void *)result);
+    }
+    else
+    {
+        printf("Error occurred\n");
+    }
+}
+
+void USuiSDKUnrealLogic::OnBtnNFTTransactionClicked(FString sendNFTAddress, FString nft_id_, FString receiveNFTaddress, FString &resultError, bool &IsSucceed)
+{
+    const char *sender_address = FstringToChar(sendNFTAddress);
+    const char *nft_id = FstringToChar(nft_id_);
+    const char *recipient_address = FstringToChar(receiveNFTaddress);
+    const char *result = transfer_nft(package_id, sender_address, nft_id, recipient_address);
+
+    if (result != NULL)
+    {
+        printf("Result: %s\n", result);
+        resultError = result;
+        // Free the result when done
+        free((void *)result);
+    }
+    else
+    {
+        printf("Error occurred\n");
+    }
+}
+
+void USuiSDKUnrealLogic::OnBtnNFTGetListData(FString curNFTAddress, int &lengthArray, FString &resultError, bool &IsSucceed)
+{
+    const char *package_id_type = "0xd1efbd86210322b550a8d6017ad5113fda2bd4f486593096f83e7b9ce3cbd002::nft::NFT";
+    const char *cur_address = FstringToChar(curNFTAddress);
+    arrayNFT = get_wallet_objects(cur_address, package_id_type);
+
+    if (arrayNFT.data == NULL)
+    {
+        printf("Failed to get Sui object data list\n");
+    }
+    lengthArray = arrayNFT.len;
+    for (size_t i = 0; i < arrayNFT.len; i++)
+    {
+        printf("Object ID: %s\n", arrayNFT.data[i].object_id);
+        printf("Version: %llu\n", arrayNFT.data[i].version);
+        printf("Digest: %s\n", arrayNFT.data[i].digest);
+        printf("Type: %s\n", arrayNFT.data[i].type_);
+        printf("Owner: %s\n", arrayNFT.data[i].owner);
+        printf("Previous Transaction: %s\n", arrayNFT.data[i].previous_transaction);
+        printf("Storage Rebate: %llu\n", arrayNFT.data[i].storage_rebate);
+        printf("Display: %s\n", arrayNFT.data[i].display);
+        printf("Content: %s\n", arrayNFT.data[i].content);
+        printf("BCS: %s\n", arrayNFT.data[i].bcs);
+        printf("\n");
+    }
+
+    free_sui_object_data_list(arrayNFT);
+}
+
+void USuiSDKUnrealLogic::OnBtnNFTGetDataItem(FString curNFTAddress, int index, FString &object_id, FString &version, FString &digest, FString &Type, FString &description, FString &name, FString &nftUrl, FString &resultError, bool &IsSucceed)
+{
+    object_id = arrayNFT.data[index].object_id;
+    version = FString::Printf(TEXT("%llu"), arrayNFT.data[index].version);
+    digest = arrayNFT.data[index].digest;
+    Type = arrayNFT.data[index].type_;
 }
