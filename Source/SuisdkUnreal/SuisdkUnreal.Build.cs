@@ -9,12 +9,12 @@ public class SuisdkUnreal : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 		//bEnableExceptions = true;
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UMG" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UMG", "Json", "JsonUtilities" });
 		PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
 		PrivateDependencyModuleNames.AddRange(new string[] { });
 		if (Target.Platform == UnrealTargetPlatform.Mac)
 		{
-			string unreal_sui_sdk_LibPath = Path.Combine(ModuleDirectory,"../../", "libsui_rust_sdk.dylib");
+			string unreal_sui_sdk_LibPath = Path.Combine(ModuleDirectory, "../../", "libsui_rust_sdk.dylib");
 			string destinationDirectory = Target.ProjectFile.Directory.FullName;
 			// File.Copy(unreal_sui_sdk_LibPath, Path.Combine(destinationDirectory, "libsui_rust_sdk.dylib"), true);
 			// PublicAdditionalLibraries.Add(Path.Combine(destinationDirectory, "libsui_rust_sdk.dylib"));

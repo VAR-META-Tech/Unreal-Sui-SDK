@@ -3,6 +3,8 @@
 #include "SuiSDKUnrealLogic.h"
 #include "GenericPlatform/GenericPlatformMisc.h"
 #include "Components/ComboBoxString.h"
+#include "Json.h"
+#include "JsonUtilities.h"
 #include "sui_lib.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -436,13 +438,13 @@ void USuiSDKUnrealLogic::OnBtnNFTGetListData(FString curNFTAddress, int &lengthA
 {
     const char *package_id_type = "0xd1efbd86210322b550a8d6017ad5113fda2bd4f486593096f83e7b9ce3cbd002::nft::NFT";
     const char *cur_address = FstringToChar(curNFTAddress);
-    arrayNFT = get_wallet_objects(cur_address, package_id_type);
+    arrayNFT = get_wallet_objects("0x013c740d731b06bb7447316e7b43ea6120d808d07cd0a8a0c6f391930bd449dd", package_id_type);
 
     if (arrayNFT.data == NULL)
     {
         printf("Failed to get Sui object data list\n");
     }
-    lengthArray = arrayNFT.len;
+    lengthArray = 3;
     for (size_t i = 0; i < arrayNFT.len; i++)
     {
         printf("Object ID: %s\n", arrayNFT.data[i].object_id);
@@ -463,8 +465,46 @@ void USuiSDKUnrealLogic::OnBtnNFTGetListData(FString curNFTAddress, int &lengthA
 
 void USuiSDKUnrealLogic::OnBtnNFTGetDataItem(FString curNFTAddress, int index, FString &object_id, FString &version, FString &digest, FString &Type, FString &description, FString &name, FString &nftUrl, FString &resultError, bool &IsSucceed)
 {
-    object_id = arrayNFT.data[index].object_id;
-    version = FString::Printf(TEXT("%llu"), arrayNFT.data[index].version);
-    digest = arrayNFT.data[index].digest;
-    Type = arrayNFT.data[index].type_;
+    // object_id = arrayNFT.data[index].object_id;
+    // version = FString::Printf(TEXT("%llu"), arrayNFT.data[index].version);
+    // digest = arrayNFT.data[index].digest;
+    // Type = arrayNFT.data[index].type_;
+    object_id = package_id;
+    version = package_id;
+    digest = package_id;
+    Type = package_id;
+
+    // FString JsonString = TEXT(R"({
+    //     "description": "NFT description",
+    //     "id": {
+    //         "id": "0x1028ae308ad211d4a40b4405b88b9764da55936d766c370cf909335e7459285a"
+    //     },
+    //     "name": "New NFT",
+    //     "url": "https://img.freepik.com/free-photo/abstract-autumn-beauty-multi-colored-leaf-vein-pattern-generated-by-ai_188544-9871.jpg?size=626&ext=jpg&ga=GA1.1.2008272138.1721347200&semt=ais_user"
+    // })");
+
+    // TSharedPtr<FJsonObject> JsonObject;
+    // TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(JsonString);
+
+    // if (FJsonSerializer::Deserialize(Reader, JsonObject) && JsonObject.IsValid())
+    // {
+    //     // Access values from the JSON object
+    //     FString Description = JsonObject->GetStringField("description");
+
+    //     TSharedPtr<FJsonObject> IdObject = JsonObject->GetObjectField("id");
+    //     FString Id = IdObject->GetStringField("id");
+
+    //     FString Name = JsonObject->GetStringField("name");
+    //     FString Url = JsonObject->GetStringField("url");
+
+    //     // Print the values to the output log
+    //     UE_LOG(LogTemp, Warning, TEXT("Description: %s"), *Description);
+    //     UE_LOG(LogTemp, Warning, TEXT("ID: %s"), *Id);
+    //     UE_LOG(LogTemp, Warning, TEXT("Name: %s"), *Name);
+    //     UE_LOG(LogTemp, Warning, TEXT("URL: %s"), *Url);
+    // }
+    // else
+    // {
+    //     UE_LOG(LogTemp, Error, TEXT("Failed to parse JSON."));
+    // }
 }
