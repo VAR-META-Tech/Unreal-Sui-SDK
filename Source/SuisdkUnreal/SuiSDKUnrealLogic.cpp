@@ -474,7 +474,7 @@ void USuiSDKUnrealLogic::OnBtnNFTGetDataItem(FString curNFTAddress, int index, F
     // digest = package_id;
     // Type = package_id;
 
-    FString JsonString = FString::Printf(TEXT("R(%s)"), arrayNFT.data[index].content);
+    FString JsonString = arrayNFT.data[index].content;
     printf("JsonString ID: %s\n", FstringToChar(JsonString));
     TSharedPtr<FJsonObject> JsonObject;
     TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(JsonString);
