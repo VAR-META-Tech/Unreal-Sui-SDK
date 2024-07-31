@@ -16,7 +16,13 @@
 #include <sstream>
 #include <iomanip>
 #include <cstring> // For memcpy
-
+#include "HttpModule.h"
+#include "Interfaces/IHttpResponse.h"
+#include "IImageWrapperModule.h"
+#include "IImageWrapper.h"
+#include "Modules/ModuleManager.h"
+#include "Engine/Texture2D.h"
+#include "Engine/Texture.h"
 #if PLATFORM_MAC
 #import <Cocoa/Cocoa.h>
 #endif
@@ -24,8 +30,8 @@
 MultiSig multisig;
 CU8Array resultTX;
 CSuiObjectDataArray arrayNFT;
-const char *package_id = "0x43d037dda49e37c977a1e2a4ed261147659a2913867d439a101c57b41216c216";
-const char *package_id_type = "0x43d037dda49e37c977a1e2a4ed261147659a2913867d439a101c57b41216c216::nft::NFT";
+const char *package_id = "0xd1221a769bb260043cd23634de3151813161c3571c0f98ee56621218e8e1c989";
+const char *package_id_type = "0xd1221a769bb260043cd23634de3151813161c3571c0f98ee56621218e8e1c989::nft::NFT";
 
 const char *FstringToChar(FString InputString)
 {
@@ -493,4 +499,46 @@ void USuiSDKUnrealLogic::OnBtnNFTGetDataItem(FString curNFTAddress, int index, F
     {
         free_sui_object_data_list(arrayNFT);
     }
+}
+
+void USuiSDKUnrealLogic::DownloadImage(const FString &URL, UObject *WorldContextObject, UTexture2D *&OutTexture)
+{
+    FHttpModule *Http = &FHttpModule::Get();
+    if (!Http)
+        return;
+
+    TSharedRef<IHttpRequest, ESPMode::ThreadSafe> Request = Http->CreateRequest();
+    Request->OnProcessRequestComplete().BindLambda([&OutTexture](FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful)
+                                                   {
+        if (!bWasSuccessful || !Response.IsValid())
+        {
+            UE_LOG(LogTemp, Error, TEXT("Failed to download image"));
+            return;
+        }
+
+        const TArray<uint8>& ImageData = Response->GetContent();
+        IImageWrapperModule& ImageWrapperModule = FModuleManager::LoadModuleChecked<IImageWrapperModule>(FName("ImageWrapper"));
+        TSharedPtr<IImageWrapper> ImageWrapper = ImageWrapperModule.CreateImageWrapper(EImageFormat::JPEG);
+
+        if (ImageWrapper.IsValid() && ImageWrapper->SetCompressed(ImageData.GetData(), ImageData.Num()))
+        {
+            TArray<uint8> UncompressedRGBA;
+            if (ImageWrapper->GetRaw(ERGBFormat::BGRA, 8, UncompressedRGBA))
+            {
+                UTexture2D* Texture = UTexture2D::CreateTransient(ImageWrapper->GetWidth(), ImageWrapper->GetHeight(), PF_B8G8R8A8);
+                if (Texture)
+                {
+                    void* TextureData = Texture->GetPlatformData()->Mips[0].BulkData.Lock(LOCK_READ_WRITE);
+                    FMemory::Memcpy(TextureData, UncompressedRGBA.GetData(), UncompressedRGBA.Num());
+                    Texture->GetPlatformData()->Mips[0].BulkData.Unlock();
+                    Texture->UpdateResource();
+
+                    OutTexture = Texture;
+                }
+            }
+        } });
+
+    Request->SetURL(URL);
+    Request->SetVerb("GET");
+    Request->ProcessRequest();
 }

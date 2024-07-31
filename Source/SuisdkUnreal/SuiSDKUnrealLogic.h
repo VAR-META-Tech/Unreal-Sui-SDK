@@ -6,6 +6,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "HAL/PlatformApplicationMisc.h"
 #include "Misc/AutomationTest.h"
+#include "Engine/Texture2D.h"
 
 #include "SuiSDKUnrealLogic.generated.h"
 
@@ -48,4 +49,6 @@ class SUISDKUNREAL_API USuiSDKUnrealLogic : public UBlueprintFunctionLibrary
 	static void OnBtnNFTGetListData(FString curNFTAddress, int &lengthArray, FString &result, bool &IsSucceed);
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnNFTGetDataItem"), Category = "SuiSDKUnrealLogic")
 	static void OnBtnNFTGetDataItem(FString curNFTAddress, int index, FString &object_id, FString &version, FString &digest, FString &Type, FString &description, FString &name, FString &nftUrl, FString &result, bool &IsSucceed);
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "DownloadImage"), meta = (WorldContext = "WorldContextObject"), Category = "SuiSDKUnrealLogic")
+	static void DownloadImage(const FString &URL, UObject *WorldContextObject, UTexture2D *&OutTexture);
 };
