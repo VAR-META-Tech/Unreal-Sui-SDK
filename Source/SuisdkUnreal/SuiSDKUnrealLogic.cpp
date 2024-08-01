@@ -226,6 +226,25 @@ void USuiSDKUnrealLogic::OnBtnTransaction(FString sendAddress, FString receiveAd
     }
 }
 
+void USuiSDKUnrealLogic::OnBtnSponserTransaction(FString sendAddress, FString receiveAddress, FString sponserAddress, int mount, FString &resultTrans, bool &IsTransSucceed)
+{
+    const char *cursendAddress = FstringToChar(sendAddress);
+    const char *curreceiveAddress = FstringToChar(receiveAddress);
+    const char *cursponserAddress = FstringToChar(sponserAddress);
+    const char *result = programmable_transaction_allow_sponser(cursendAddress, curreceiveAddress, mount, cursponserAddress);
+    resultTrans = result;
+    printf("OnBtnTransaction : %s\n", result);
+    if (strcmp(result, "Transaction completed successfully") == 0)
+    {
+
+        IsTransSucceed = true;
+    }
+    else
+    {
+        IsTransSucceed = false;
+    }
+}
+
 void USuiSDKUnrealLogic::OnBtnRequestFaucet(FString faucetAddress, FString &resultFaucet, bool &IsFaucetSucceed)
 {
     const char *faucetaddressstr = FstringToChar(faucetAddress);
@@ -234,10 +253,12 @@ void USuiSDKUnrealLogic::OnBtnRequestFaucet(FString faucetAddress, FString &resu
     printf("request_tokens_from_faucet_: %s\n", result);
     if (strcmp(result, "Request Faucet successful") == 0)
     {
+
         IsFaucetSucceed = true;
     }
     else
     {
+
         IsFaucetSucceed = false;
     }
 }
@@ -499,46 +520,4 @@ void USuiSDKUnrealLogic::OnBtnNFTGetDataItem(FString curNFTAddress, int index, F
     {
         free_sui_object_data_list(arrayNFT);
     }
-}
-
-void USuiSDKUnrealLogic::DownloadImage(const FString &URL, UObject *WorldContextObject, UTexture2D *&OutTexture)
-{
-    FHttpModule *Http = &FHttpModule::Get();
-    if (!Http)
-        return;
-
-    TSharedRef<IHttpRequest, ESPMode::ThreadSafe> Request = Http->CreateRequest();
-    Request->OnProcessRequestComplete().BindLambda([&OutTexture](FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful)
-                                                   {
-        if (!bWasSuccessful || !Response.IsValid())
-        {
-            UE_LOG(LogTemp, Error, TEXT("Failed to download image"));
-            return;
-        }
-
-        const TArray<uint8>& ImageData = Response->GetContent();
-        IImageWrapperModule& ImageWrapperModule = FModuleManager::LoadModuleChecked<IImageWrapperModule>(FName("ImageWrapper"));
-        TSharedPtr<IImageWrapper> ImageWrapper = ImageWrapperModule.CreateImageWrapper(EImageFormat::JPEG);
-
-        if (ImageWrapper.IsValid() && ImageWrapper->SetCompressed(ImageData.GetData(), ImageData.Num()))
-        {
-            TArray<uint8> UncompressedRGBA;
-            if (ImageWrapper->GetRaw(ERGBFormat::BGRA, 8, UncompressedRGBA))
-            {
-                UTexture2D* Texture = UTexture2D::CreateTransient(ImageWrapper->GetWidth(), ImageWrapper->GetHeight(), PF_B8G8R8A8);
-                if (Texture)
-                {
-                    void* TextureData = Texture->GetPlatformData()->Mips[0].BulkData.Lock(LOCK_READ_WRITE);
-                    FMemory::Memcpy(TextureData, UncompressedRGBA.GetData(), UncompressedRGBA.Num());
-                    Texture->GetPlatformData()->Mips[0].BulkData.Unlock();
-                    Texture->UpdateResource();
-
-                    OutTexture = Texture;
-                }
-            }
-        } });
-
-    Request->SetURL(URL);
-    Request->SetVerb("GET");
-    Request->ProcessRequest();
 }
