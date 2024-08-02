@@ -8,21 +8,17 @@ public class SuisdkUnreal : ModuleRules
 	public SuisdkUnreal(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
-		//bEnableExceptions = true;
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UMG", "Json", "JsonUtilities", "HTTP", "ImageWrapper" });
 		PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
 		PrivateDependencyModuleNames.AddRange(new string[] { });
 		if (Target.Platform == UnrealTargetPlatform.Mac)
 		{
-			string unreal_sui_sdk_LibPath = Path.Combine(ModuleDirectory, "../../", "libsui_rust_sdk.dylib");
+			string unreal_sui_sdk_LibPath = Path.Combine(ModuleDirectory, "../../Lib/", "libsui_rust_sdk.dylib");
 			string destinationDirectory = Target.ProjectFile.Directory.FullName;
-			// File.Copy(unreal_sui_sdk_LibPath, Path.Combine(destinationDirectory, "libsui_rust_sdk.dylib"), true);
-			// PublicAdditionalLibraries.Add(Path.Combine(destinationDirectory, "libsui_rust_sdk.dylib"));
 			PublicAdditionalLibraries.Add(unreal_sui_sdk_LibPath);
-			PublicIncludePaths.AddRange(new string[] { Path.Combine(ModuleDirectory, "../../") });
+			PublicIncludePaths.AddRange(new string[] { Path.Combine(ModuleDirectory, "../../Lib/") });
 			PublicIncludePaths.AddRange(new string[] { Path.Combine(ModuleDirectory, "../../../") });
 		}
-		//bEnableUndefinedIdentifierWarnings = false;
 		CppStandard = CppStandardVersion.Cpp17;
 	}
 }
