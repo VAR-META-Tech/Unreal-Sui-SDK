@@ -5,39 +5,31 @@
 
 # Unreal-Sui-SDK #
 
-Unreal-Sui-SDK is a cpp package written in C++ to help developers integrate Sui blockchain technology into their cpp and Unreal projects.
+Unreal-Sui-SDK is a sample example to help developers integrate Sui blockchain technology into their C++ and Unreal projects.
 
 - [Project Layout](#project-layout)
 - [Features](#features)
 - [Requirements](#requirements)
 - [Dependencies](#dependencies)
 - [Installation](#installation)
-- [Example Unreal Project](#example-unreal-project)
 - [Using Unreal-Sui-SDK](#using-unreal-sui-sdk)
-  - [RestClient](#restclient)
-  - [FaucetClient](#faucetclient)
-  - [TokenClient](#tokenclient)
-  - [EntryFunction](#entryfunction)
-  - [Wallet](#wallet)
 - [Using Unreal-Sui-SDK with Blueprint](#using-unreal-sui-sdk-with-blueprint)
 - [Examples](#examples)
 - [License](#license)
 
 ### Project Layout ###  
 
-1. **`AptosSDKDemo/`**:: This directory contains examples showcasing how to use the Aptos Cpp SDK.
-2. **`AptosUI/`**:: This directory contains Wallet example Unreal Project using Aptos Cpp SDK.
-3. **`Doc/`**:: Documentation related to the project, which include setup API, Class references.
+1. **`Config/`**:: This directory contains the project's configuration files, including INI files used to set various project parameters .
+2. **`Content/`**:: This directory contains all the project's content assets.
+3. **`Lib/`**:: This directory contains the libsui_rust_sdk.dylib library and header files to use the functions in the library.
 4. **`Resource/`**:: A place for various resources needed for the project, like images, data files, or other assets.
-5. **`Src/`**: Contains the main source code for the SDK. This is where you'll find the core functionality, client classes, and utility modules.
-6. **`ThirdParty/`**: Holds unit tests and integration tests for verifying the correctness of your code. Writing comprehensive tests ensures robustness.
+5. **`Source/`**: This directory contains the project's C++ source code.
 
 ### Features ###
 
-- [x] ......
-- [x] ......
-- [x] ..........
-- [x] ............s.
+- [x]  Compatibility with main, dev, and test networks.
+- [x]  Comprehensive Unit and Integration Test coverage.
+
 
 
 ### Requirements ###
@@ -48,74 +40,60 @@ Unreal-Sui-SDK is a cpp package written in C++ to help developers integrate Sui 
 
 
 ### Dependencies
-.................................................
+- https://github.com/VAR-META-Tech/Rust2C-Sui-SDK
 
 ### Installation ###
 # Installation Guide
 
-................................................
+This guide provides step-by-step instructions for installing and setting up on macOS platforms. Ensure you have the following prerequisites installed to build the project:
 
 ## Prerequisites
-
-### All Platforms
-- **.....**: ........
-
-### macOS Specific
-- **CMake** (version 3.14 or higher)
-- **Visual Studio** with C++ development environment
-
-## Installation Steps
-
-### Windows
-1. Install Visual Studio with the C++ development environment.
-2. Install CMake if not included in the Visual Studio installation.
-3. Install Conan using pip or download it from the official website.
-
-### Linux
-1. Install CMake and Conan using your distribution's package manager.
-
-### macOS
-1. Install Visual Studio with the C++ development environment.
-
-2. Install ......:
-    ```sh
-    ..................
-    ```
-3. ........:
-    ```sh
-    ..................
-    ```
-
+- **Visual Studio Code** with C++ development environment
+- **Install Sui** Follow this guide to install Sui https://docs.sui.io/guides/developer/getting-started/sui-install
 ## Project Setup
-
-Follow these steps to set up the project environment:
-
-1. Clone the repository and initialize submodules:
+Run follow command to setting Envỉroment befor testing:
+1. Check Sui Client Environment:  
+    ```sh 
+    Sui client envs
+    ```
+ **NOTE:If you dont have DevNet Please Run CMD :**
+```sh 
+    sui client new-env --alias devnet --rpc https://fullnode.devnet.sui.io:443
+```
+2. Switch to devnet network: 
+    ```sh 
+    sui client switch --env devnet
+    ```
+3. Check current network:
+    ```sh 
+    sui client active-env
+    ```
+ **NOTE: The return should be devnet**
+ 
+4. Get the active address: 
     ```sh
-    git clone <repository-url>
-    cd <repository-name>
-    git submodule update --init --recursive
+    sui client active-address
     ```
-2. Build the project:
-     ```sh
-    git clone <repository-url>
-    cd <repository-name>
-    git submodule update --init --recursive
+5. Request token:
+    ```sh
+    sui client faucet 
+    ```
+ **NOTE: Wait for 60s to get the tokens**
+
+6. Check the gas coin objects for the active address: 
+    ```sh
+    sui client gas
     ```
 
-#For run code coverage on MacOS
-First of all, make sure you have llvm and lcov installed. You can install them using brew:
-brew install llvm lcov
-To generate coverage data, you would then do:
-cmake -DCODE_COVERAGE=ON ..
-make
-make coverage
+### Using Unreal-Sui-SDK
+Unreal-Sui-SDK can integrate into your own Unreal projects.
+We have two options to run the project:
 
-### Example Unreal Project
-A examples unreal project can be found in the following directory:  
-`........`.
+   1. Open the Unreal project directly through the SuisdkUnreal.uproject file and then click the Run icon to test.
+    
+   2. Open the project using Visual Studio Code, build the source code, and run the test.
 
-For Unreal project please reference example in ```........```, you need define Build.cs to integration Aptos library with Unreal engine.
+For option 2 you need define Build.cs to integration libsui_rust_sdk.dylib library with Unreal engine.
 Here is an example:
 ```cshape
 // Fill out your copyright notice in the Description page of Project Settings.
@@ -144,15 +122,8 @@ public class SuisdkUnreal : ModuleRules
 }
 
 ```
-Video we using SDK on windows with sample unreal project:
 
-
-link video
-
-### Using Unreal-Sui-SDK
-Unreal-Sui-SDK can integrate into your own any cpp or Unreal projects. The main functionality comes from several key classes: 
-
-### using-Unreal-Sui-SDK-with-blueprint
+### Using-Unreal-Sui-SDK-with-blueprint
 **Create Wallet**
 ![](./Resource/create_wallet.png)
 
@@ -165,16 +136,15 @@ Unreal-Sui-SDK can integrate into your own any cpp or Unreal projects. The main 
 **Create Collection**
 ![](./Resource/create_collection.png)
 
-**Create NFT**
+**CreateNFT**
 ![](./Resource/create_nft.png)
 
-**Airdrop**
+**Multisign**
 ![](./Resource/airdrop.png)
 
 ### Examples ###
 
-The SDK comes with several examples that show how to leverage the SDK to its full potential. The examples include 
-
+The SDK comes with several examples that show how to leverage the SDK to its full potential. The examples include Wallet Creation and Management, Token Transfers,  NFT Minting, Account Funding, and Multi-signature.
 
 link video
 
