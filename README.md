@@ -125,22 +125,22 @@ public class SuisdkUnreal : ModuleRules
 
 ### Using-Unreal-Sui-SDK-with-blueprint
 **Create Wallet**
-![](./Resource/create_wallet.png)
+![](./Resource/CreateWallet.png)
 
 **Import Wallet**
-![](./Resource/import_wallet.png)
+![](./Resource/ImportWallet.png)
 
 **Send Transaction**
-![](./Resource/send_transaction.png)
+![](./Resource/Transaction.png)
 
-**Create Collection**
-![](./Resource/create_collection.png)
+**Request Faucet**
+![](./Resource/RequestFaucet.png)
 
-**CreateNFT**
-![](./Resource/create_nft.png)
+**MintNFT**
+![](./Resource/MintNFT.png)
 
 **Multisign**
-![](./Resource/airdrop.png)
+![](./Resource/Multisign.png)
 
 ### Examples ###
 
