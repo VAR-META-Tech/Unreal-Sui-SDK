@@ -144,7 +144,7 @@ public class SuisdkUnreal : ModuleRules
 
 ### Examples ###
 
-The SDK comes with several examples that show how to leverage the SDK to its full potential. The examples include Wallet Creation and Management, Token Transfers,  NFT Minting, Account Funding, and Multi-signature.
+The SDK comes with several examples that show how to leverage the Rust2C-Sui-SDK to its full potential. The examples include Wallet Creation and Management, Token Transfers,  NFT Minting, Account Funding, and Multi-signature.
 
 
 ### License ###
