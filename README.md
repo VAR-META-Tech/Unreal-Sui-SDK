@@ -146,8 +146,6 @@ public class SuisdkUnreal : ModuleRules
 
 The SDK comes with several examples that show how to leverage the SDK to its full potential. The examples include Wallet Creation and Management, Token Transfers,  NFT Minting, Account Funding, and Multi-signature.
 
-link video
-
 
 ### License ###
 This project is licensed under the Apache-2.0 License. Refer to the LICENSE.txt file for details.
