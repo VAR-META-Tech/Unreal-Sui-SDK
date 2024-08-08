@@ -119,14 +119,32 @@ void USuiSDKUnrealLogic::OnBtnGenerateClicked(FString key_scheme, FString word_l
     free_wallet(wallet);
 }
 
-void USuiSDKUnrealLogic::OnBtnGetWalletPrivateKeyClicked(FString importprivateKey, FString &mnemonic, FString &address, FString &privateKey, FString &publicKey)
+void USuiSDKUnrealLogic::OnBtnImportWalletPrivateKeyClicked(FString importprivateKey, FString &mnemonic, FString &address, FString &privateKey, FString &publicKey)
 {
     const char *privateConchar = FstringToChar(importprivateKey);
     printf("  privateConchar: %s\n", privateConchar);
     import_from_private_key(privateConchar);
+    WalletList wallet_list = get_wallets();
+    for (size_t i = 0; i < wallet_list.length; ++i)
+    {
+        Wallet wallet = wallet_list.wallets[i];
+        if (strcmp(privateConchar, wallet.private_key) == 0)
+        {
+            address = wallet.address;
+            privateKey = wallet.private_key;
+            publicKey = wallet.public_base64_key;
+            mnemonic = wallet.mnemonic;
+            printf("  Address: %s\n", wallet.address);
+            printf("  Mnemonic: %s\n", wallet.mnemonic);
+            printf("  Public Base64 Key: %s\n", wallet.public_base64_key);
+            printf("  Private Key: %s\n", wallet.private_key);
+            break;
+        }
+    }
+    free_wallet_list(wallet_list);
 }
 
-void USuiSDKUnrealLogic::OnBtnGetWalletMnemonicClicked(FString importmnemonic, FString &mnemonic, FString &address, FString &privateKey, FString &publicKey)
+void USuiSDKUnrealLogic::OnBtnImportWalletMnemonicClicked(FString importmnemonic, FString &mnemonic, FString &address, FString &privateKey, FString &publicKey)
 {
     const char *mnemonicConchar = FstringToChar(importmnemonic);
     printf("  mnemonicConchar: %s\n", mnemonicConchar);

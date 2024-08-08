@@ -24,10 +24,10 @@ class SUISDKUNREAL_API USuiSDKUnrealLogic : public UBlueprintFunctionLibrary
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnGenerateClicked"), Category = "SuiSDKUnrealLogic")
 	static void OnBtnGenerateClicked(FString key_scheme, FString word_length, FString &mnemonic, FString &address, FString &privateKey, FString &publicKey);
-	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnGetWalletPrivateKeyClicked"), Category = "SuiSDKUnrealLogic")
-	static void OnBtnGetWalletPrivateKeyClicked(FString importprivateKey, FString &mnemonic, FString &address, FString &privateKey, FString &publicKey);
-	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnGetWalletMnemonicClicked"), Category = "SuiSDKUnrealLogic")
-	static void OnBtnGetWalletMnemonicClicked(FString importmnemonic, FString &mnemonic, FString &address, FString &privateKey, FString &publicKey);
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnImportWalletPrivateKeyClicked"), Category = "SuiSDKUnrealLogic")
+	static void OnBtnImportWalletPrivateKeyClicked(FString importprivateKey, FString &mnemonic, FString &address, FString &privateKey, FString &publicKey);
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnImportWalletMnemonicClicked"), Category = "SuiSDKUnrealLogic")
+	static void OnBtnImportWalletMnemonicClicked(FString importmnemonic, FString &mnemonic, FString &address, FString &privateKey, FString &publicKey);
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnGetWallByCurrentAddress"), Category = "SuiSDKUnrealLogic")
 	static void OnBtnGetWallByCurrentAddress(FString currentAddress, FString &mnemonic, FString &address, FString &privateKey, FString &publicKey);
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnBtnGetBalanceByCurrentAddress"), Category = "SuiSDKUnrealLogic")
