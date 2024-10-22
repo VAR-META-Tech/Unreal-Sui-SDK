@@ -156,6 +156,15 @@ public class SuisdkUnreal : ModuleRules
 
 ```
 
+##### Import Wallet from Private Key
+To import a wallet using a private key:
+```cpp
+    ImportResult *result = import_from_private_key(PRIVATE_KEY_BASE64);
+    printf("Status: %d\n", result->status);
+    printf("Address: %s\n", result->address);
+    printf("Error: %s\n", result->error);
+```
+
 ### Using-Unreal-Sui-SDK-with-blueprint
 **Create Wallet**
 ![](./Resource/CreateWallet.png)
