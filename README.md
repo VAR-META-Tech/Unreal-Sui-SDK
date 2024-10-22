@@ -27,8 +27,41 @@ Unreal-Sui-SDK is a sample example to help developers integrate Sui blockchain t
 
 ### Features ###
 
-- [x]  Compatibility with main, dev, and test networks.
-- [x]  Comprehensive Unit and Integration Test coverage.
+#### General
+- [x] Compatibility with main, dev, and test networks.
+- [x] Integration with Sui blockchain using native libraries.
+- [x] Cross-platform support (macOS, Windows, Linux).
+
+#### NFT
+- [x] Mint new NFTs.
+- [x] Transfer NFTs to other addresses.
+- [x] Retrieve wallet objects related to NFTs.
+- [x] Conversion between raw and managed data structures for NFT objects.
+
+#### BCS
+- [x] Basic serialization and deserialization of Sui types.
+- [x] Support for various Sui types including integers, floats, booleans, strings, and addresses.
+- [x] Conversion of Sui types to BCS (Binary Canonical Serialization) format.
+
+#### SuiMultisig
+- [x] Create and manage multisig wallets.
+- [x] Create transactions from multisig wallets.
+- [x] Sign and execute transactions using multisig wallets.
+- [x] Handling of multisig data structures and transaction results.
+
+#### SuiTransactionBuilder
+- [x] Create and manage transaction builders.
+- [x] Add various types of commands to transactions (e.g., move call, transfer object, split coins, merge coins).
+- [x] Execute transactions with or without a sponsor.
+
+#### SuiWallet
+- [x] Singleton pattern for easy access to wallet functionalities.
+- [x] Generate new wallets with specified key schemes and word lengths.
+- [x] Import wallets from private keys.
+- [x] Import wallets from mnemonics.
+- [x] List all wallets.
+- [x] Display wallet details.
+- [x] Generate and add new keys to the wallet.
 
 
 
