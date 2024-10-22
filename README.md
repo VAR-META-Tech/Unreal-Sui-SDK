@@ -165,6 +165,143 @@ To import a wallet using a private key:
     printf("Error: %s\n", result->error);
 ```
 
+##### Import Wallet from Mnemonic
+To import a wallet using a mnemonic:
+```cpp
+     ImportResult *result = import_from_mnemonic(SENDER_MNEMONIC, "ED25519", SENDER_MNEMONIC_ALIAS);
+    printf("Status: %d\n", result->status);
+    printf("Address: %s\n", result->address);
+    printf("Error: %s\n", result->error);
+```
+
+##### Get Saved Wallets
+To get saved wallets:
+```cpp
+     WalletList wallet_list = get_wallets();
+```
+
+##### Get Saved Wallet From Address
+To get saved wallet from address:
+```cpp
+    Wallet *wallet = get_wallet_from_address(ADDRESS);
+```
+
+##### Generate Wallet Using KeyScheme and Word Length
+To generate wallet using key scheme and word length:
+```cpp
+    Wallet *wallet = generate_wallet("ed25519", "word12");
+```
+
+##### Generate random and save wallet
+To generate random and save wallet:
+```cpp
+    Wallet *wallet = generate_and_add_key();
+```
+
+##### Request tokens from faucet
+To request tokens from faucet:
+```cpp
+   const char *response = request_tokens_from_faucet(FAUCET_ADDRESS);
+```
+
+##### Execute programmable transaction
+```cpp
+    unsigned long long amount = 1000000000;
+    const char *result = programmable_transaction(SENDER_ADDRESS, RECIPIENT_ADDRESS, amount);
+    assert(result != NULL);
+    printf("Result: %s\n", result);
+    free((void *)result);
+```
+
+##### Execute programmable transaction with sponser
+```cpp
+    unsigned long long amount = 5400000000;
+    const char *result = programmable_transaction_allow_sponser(SENDER_ADDRESS, RECIPIENT_ADDRESS, amount, SPONSER_ADDRESS);
+    assert(result != NULL);
+    printf("Result: %s\n", result);
+    free((void *)result);
+```
+
+##### Execute programmable transaction with builder
+```cpp
+  // Create a new builder
+    CProgrammableTransactionBuilder *builder = create_builder();
+    assert(builder != NULL);
+
+    //
+    CArguments *coin = create_arguments();
+    add_argument_gas_coin(coin);
+
+    CArguments *amount = create_arguments();
+    make_pure(builder, amount, bsc_basic("u64", "1000000000000"));
+
+    add_split_coins_command(builder, coin, amount);
+
+    // Add a transfer object command
+    CArguments *agrument = create_arguments();
+    add_argument_result(agrument, 0);
+    CArguments *recipient = create_arguments();
+    make_pure(builder, recipient, bsc_basic("address", RECIPIENT_ADDRESS));
+    add_transfer_object_command(builder, agrument, recipient);
+
+    // Execute the builder
+    const char *result = execute_transaction(builder, SENDER_ADDRESS, 5000000);
+    assert(result != NULL);
+    printf("Result: %s\n", result);
+```
+
+##### To get and execute transaction using multisig
+```cpp
+    // Step 1: Create a multisig
+    const char *addresses[] = {"0x013c740d731b06bb7447316e7b43ea6120d808d07cd0a8a0c6f391930bd449dd", "0x2107184d961804e3cbeef48106a7384d11d90f5a050fde0709da8e079450b824", "0x3d8c53148ba895d5aaa4a604af9864dd041fb409977fdfacc313f296f36faa77"};
+    CStringArray addr_array = {addresses, 3};
+
+    unsigned char weights_data[] = {1, 1, 1};
+    CU8Array weights = {weights_data, 3, NULL};
+
+    uint16_t threshold = 2;
+
+    // Test get_or_create_multisig
+    CMultiSig multisig = get_or_create_multisig(addr_array, weights, threshold);
+    if (multisig.error)
+    {
+        printf("Error creating multisig: %s\n", multisig.error);
+    }
+    else
+    {
+        printf("Multisig Address: %s\n", multisig.address);
+        printf("Multisig Bytes: ");
+        print_hex(multisig.bytes.data, multisig.bytes.len);
+    }
+
+    // Step 2: Create a transaction
+    const char *from_address = "0x5e4f2cce89e8c5f634b4692fdad3e1345b88aa90546ccaa417fd8a5b0591a21c";
+    const char *to_address = "0x7bee59cf2c25539bb267b7d26ae8722f1dfe5112949727648f7b17de0ea72432";
+    uint64_t amount = 1000; // Sample transfer amount
+
+    CU8Array tx = create_transaction(from_address, to_address, amount);
+    if (tx.error)
+    {
+        printf("Error creating transaction: %s\n", tx.error);
+    }
+    else
+    {
+        printf("Transaction bytes: ");
+        print_hex(tx.data, tx.len);
+    }
+
+    // Step 3: Sign and execute the multisig transaction
+    const char *result = sign_and_execute_transaction_miltisig(multisig.bytes, tx, addr_array);
+    if (result)
+    {
+        printf("Error signing and executing transaction: %s\n", result);
+    }
+    else
+    {
+        printf("Transaction executed successfully.\n");
+    }
+```
+
 ### Using-Unreal-Sui-SDK-with-blueprint
 **Create Wallet**
 ![](./Resource/CreateWallet.png)
