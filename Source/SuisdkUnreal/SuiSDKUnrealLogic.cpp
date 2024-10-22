@@ -27,7 +27,7 @@
 #import <Cocoa/Cocoa.h>
 #endif
 
-MultiSig multisig;
+CMultiSig multisig;
 CU8Array resultTX;
 CSuiObjectDataArray arrayNFT;
 const char *package_id = "0xd1221a769bb260043cd23634de3151813161c3571c0f98ee56621218e8e1c989";
@@ -147,9 +147,9 @@ void USuiSDKUnrealLogic::OnBtnImportWalletPrivateKeyClicked(FString importprivat
 void USuiSDKUnrealLogic::OnBtnImportWalletMnemonicClicked(FString importmnemonic, FString &mnemonic, FString &address, FString &privateKey, FString &publicKey)
 {
     const char *mnemonicConchar = FstringToChar(importmnemonic);
-    printf("  mnemonicConchar: %s\n", mnemonicConchar);
-    char *returnAddress = import_from_mnemonic(mnemonicConchar);
-    address = returnAddress;
+    printf("  mnemonic: %s\n", mnemonicConchar);
+    ImportResult *result = import_from_mnemonic(mnemonicConchar, "ED25519", "");
+    address = result->address;
 }
 
 void USuiSDKUnrealLogic::OnBtnGetWallByCurrentAddress(FString currentAddress, FString &mnemonic, FString &address, FString &privateKey, FString &publicKey)
@@ -195,7 +195,7 @@ void USuiSDKUnrealLogic::OnBtnGetBalanceByCurrentAddress(FString currentAddress,
 {
     const char *currentAddressSelected = FstringToChar(currentAddress);
 
-    Balance balance = get_balance_sync(currentAddressSelected);
+    CBalance balance = get_balance_sync(currentAddressSelected);
     if (balance.coin_type == NULL)
     {
         printf("Failed to fetch balance.\n");
@@ -227,21 +227,34 @@ void USuiSDKUnrealLogic::OnBtnGetBalanceByCurrentAddress(FString currentAddress,
     free_balance(balance);
 }
 
-void USuiSDKUnrealLogic::OnBtnTransaction(FString sendAddress, FString receiveAddress, int amount, FString &resultTrans, bool &IsTransSucceed)
+void USuiSDKUnrealLogic::OnBtnTransaction(FString sendAddress, FString receiveAddress, int sendAmount, FString &resultTrans, bool &IsTransSucceed)
 {
     const char *currentsendAddress = FstringToChar(sendAddress);
     const char *currentreceiveAddress = FstringToChar(receiveAddress);
-    const char *result = programmable_transaction(currentsendAddress, currentreceiveAddress, amount);
+    CProgrammableTransactionBuilder *builder = create_builder();
+    assert(builder != NULL);
+
+    //
+    CArguments *coin = create_arguments();
+    add_argument_gas_coin(coin);
+
+    CArguments *amount = create_arguments();
+    make_pure(builder, amount, bsc_basic("u64", std::to_string(sendAmount).c_str()));
+
+    add_split_coins_command(builder, coin, amount);
+
+    // Add a transfer object command
+    CArguments *agrument = create_arguments();
+    add_argument_result(agrument, 0);
+    CArguments *recipient = create_arguments();
+    make_pure(builder, recipient, bsc_basic("address", currentreceiveAddress));
+    add_transfer_object_command(builder, agrument, recipient);
+
+    // Execute the builder
+    const char *result = execute_transaction(builder, currentsendAddress, 5000000);
     resultTrans = result;
-    printf("OnBtnTransaction : %s\n", result);
-    if (strcmp(result, "Transaction completed successfully") == 0)
-    {
-        IsTransSucceed = true;
-    }
-    else
-    {
-        IsTransSucceed = false;
-    }
+    printf("Execute transaction builder result: %s\n", result);
+    IsTransSucceed = true;
 }
 
 void USuiSDKUnrealLogic::OnBtnSponserTransaction(FString sendAddress, FString receiveAddress, FString sponserAddress, int mount, FString &resultTrans, bool &IsTransSucceed)
@@ -252,7 +265,7 @@ void USuiSDKUnrealLogic::OnBtnSponserTransaction(FString sendAddress, FString re
     const char *result = programmable_transaction_allow_sponser(cursendAddress, curreceiveAddress, mount, cursponserAddress);
     resultTrans = result;
     printf("OnBtnTransaction : %s\n", result);
-    if (strcmp(result, "Transaction completed successfully") == 0)
+    if (strcmp(result, "status: Success") == 0)
     {
 
         IsTransSucceed = true;
@@ -266,9 +279,9 @@ void USuiSDKUnrealLogic::OnBtnSponserTransaction(FString sendAddress, FString re
 void USuiSDKUnrealLogic::OnBtnRequestFaucet(FString faucetAddress, FString &resultFaucet, bool &IsFaucetSucceed)
 {
     const char *faucetaddressstr = FstringToChar(faucetAddress);
-    const char *result = request_tokens_from_faucet_(faucetaddressstr);
+    const char *result = request_tokens_from_faucet(faucetaddressstr);
     resultFaucet = result;
-    printf("request_tokens_from_faucet_: %s\n", result);
+    printf("request_tokens_from_faucet: %s\n", result);
     if (strcmp(result, "Request Faucet successful") == 0)
     {
 
@@ -334,7 +347,7 @@ void USuiSDKUnrealLogic::OnBtnGetMultisignClicked(TArray<FString> arrayAddress, 
     // Print the hex string
     std::cout << "Hex String: " << FstringToChar(multisignBytes) << std::endl;
 
-    Balance balance = get_balance_sync(multisig.address);
+    CBalance balance = get_balance_sync(multisig.address);
     std::ostringstream oss;
     // Stream the uint64_t values into the string stream as a comma-separated list
     oss << balance.total_balance[0];
@@ -410,7 +423,7 @@ void USuiSDKUnrealLogic::OnBtnSignandExecuteTransactionClicked(TArray<FString> a
     }
     CStringArray addresses2 = {addresses_data, arrayAddress.Num()};
     // Call the Rust function
-    const char *result2 = sign_and_execute_transaction(multisig.bytes, resultTX, addresses2);
+    const char *result2 = sign_and_execute_transaction_miltisig(multisig.bytes, resultTX, addresses2);
 
     if (result2 != NULL)
     {
@@ -423,7 +436,7 @@ void USuiSDKUnrealLogic::OnBtnSignandExecuteTransactionClicked(TArray<FString> a
         printf("Error occurred\n");
     }
 
-    Balance balance = get_balance_sync(multisig.address);
+    CBalance balance = get_balance_sync(multisig.address);
     std::ostringstream oss;
     // Stream the uint64_t values into the string stream as a comma-separated list
     oss << balance.total_balance[0];
